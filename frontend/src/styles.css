@@ -1,0 +1,310 @@
+:root {
+  --tinta: #23281f;
+  --piedra: #ece7da;
+  --tarjeta: #fdfcf8;
+  --marca: #2f4a3c;
+  --marca-oscuro: #203327;
+  --dorado: #c99a3b;
+  --linea: #d8d2c0;
+  --error: #a73b2b;
+  --error-fondo: #f6e6e2;
+
+  --fuente-display: "Space Grotesk", "Segoe UI", sans-serif;
+  --fuente-texto: "Inter", "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--piedra);
+  color: var(--tinta);
+  font-family: var(--fuente-texto);
+  -webkit-font-smoothing: antialiased;
+}
+
+.pantalla {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+}
+
+/* La tarjeta imita el formato de una tarjeta de membresia fisica:
+   una franja superior con el nombre de la tienda y, debajo,
+   el formulario en el "cuerpo" de la tarjeta. */
+.tarjeta-formulario {
+  width: 100%;
+  max-width: 400px;
+  background: var(--tarjeta);
+  border-radius: 18px;
+  box-shadow: 0 1px 2px rgba(35, 40, 31, 0.06), 0 12px 32px rgba(35, 40, 31, 0.12);
+  overflow: hidden;
+  border: 1px solid var(--linea);
+}
+
+.franja-marca {
+  background: var(--marca);
+  background-image: linear-gradient(135deg, var(--marca) 0%, var(--marca-oscuro) 100%);
+  color: var(--piedra);
+  padding: 22px 28px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 3px solid var(--dorado);
+}
+
+.franja-marca__tienda {
+  font-family: var(--fuente-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+}
+
+.franja-marca__tipo {
+  font-size: 0.75rem;
+  color: rgba(236, 231, 218, 0.75);
+}
+
+.cuerpo-formulario {
+  padding: 28px 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.cuerpo-formulario h1 {
+  font-family: var(--fuente-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.texto-ayuda {
+  margin: -10px 0 0;
+  color: #5b6154;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--tinta);
+}
+
+.campo input {
+  font-family: var(--fuente-display);
+  font-size: 1.05rem;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1.5px solid var(--linea);
+  background: #fff;
+  color: var(--tinta);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.campo input:focus-visible {
+  border-color: var(--marca);
+  box-shadow: 0 0 0 3px rgba(47, 74, 60, 0.15);
+}
+
+.mensaje-error {
+  font-size: 0.82rem;
+  color: var(--error);
+}
+
+.alerta-error {
+  background: var(--error-fondo);
+  color: var(--error);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.fila-pines {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.campo-pin {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.etiqueta-pin {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--tinta);
+}
+
+.cajas-pin {
+  display: flex;
+  gap: 8px;
+}
+
+.caja-pin {
+  width: 46px;
+  height: 52px;
+  text-align: center;
+  font-family: var(--fuente-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  border-radius: 10px;
+  border: 1.5px solid var(--linea);
+  background: #fff;
+  color: var(--tinta);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.caja-pin:focus-visible {
+  border-color: var(--marca);
+  box-shadow: 0 0 0 3px rgba(47, 74, 60, 0.15);
+}
+
+.boton-principal {
+  margin-top: 4px;
+  padding: 13px 18px;
+  border-radius: 10px;
+  border: none;
+  background: var(--marca);
+  color: var(--piedra);
+  font-family: var(--fuente-display);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.05s ease;
+}
+
+.boton-principal:hover {
+  background: var(--marca-oscuro);
+}
+
+.boton-principal:active {
+  transform: translateY(1px);
+}
+
+.boton-principal:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.boton-secundario {
+  margin-top: 4px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: 1.5px solid var(--linea);
+  background: transparent;
+  color: var(--tinta);
+  font-family: var(--fuente-texto);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.boton-secundario:hover {
+  border-color: var(--marca);
+}
+
+.texto-enlace {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #5b6154;
+  text-align: center;
+}
+
+.enlace {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--marca);
+  font-weight: 600;
+  font-size: inherit;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Divisor tipo boleto perforado, separando la franja de marca del formulario */
+.franja-marca {
+  position: relative;
+}
+
+.franja-marca::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background-image: radial-gradient(circle, var(--piedra) 1.5px, transparent 1.6px);
+  background-size: 10px 3px;
+  background-repeat: repeat-x;
+  background-position: 0 -1px;
+}
+
+.cuerpo-bienvenida {
+  gap: 22px;
+}
+
+.lista-datos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 16px;
+  background: var(--piedra);
+  border-radius: 12px;
+}
+
+.lista-datos > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.lista-datos dt {
+  color: #5b6154;
+  font-size: 0.85rem;
+}
+
+.lista-datos dd {
+  margin: 0;
+  font-family: var(--fuente-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 420px) {
+  .cuerpo-formulario {
+    padding: 24px 20px 28px;
+  }
+
+  .caja-pin {
+    width: 40px;
+    height: 48px;
+  }
+}
