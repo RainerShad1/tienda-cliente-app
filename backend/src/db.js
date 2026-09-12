@@ -40,4 +40,14 @@ function crearCliente(cliente) {
   return cliente;
 }
 
-module.exports = { leerClientes, escribirClientes, buscarPorCedula, crearCliente };
+function actualizarCliente(cedula, cambios) {
+  const clientes = leerClientes();
+  const indice = clientes.findIndex((c) => c.cedula === cedula);
+  if (indice === -1) return null;
+
+  clientes[indice] = { ...clientes[indice], ...cambios };
+  escribirClientes(clientes);
+  return clientes[indice];
+}
+
+module.exports = { leerClientes, escribirClientes, buscarPorCedula, crearCliente, actualizarCliente };

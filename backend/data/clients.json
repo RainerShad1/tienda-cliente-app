@@ -2,9 +2,17 @@
   {
     "id": "40240702833",
     "cedula": "40240702833",
-    "nombre": "Jhonangel",
+    "nombre": "Jhonangel Diaz",
     "telefono": "8097527776",
-    "pinHash": "$2a$10$XBbblPuqS.fzrRPXlQ3S5.SjTk60LB/F0zcB5CvZEduFAxCJ84Vi.",
-    "creadoEn": "2026-09-11T05:53:51.677Z"
+    "pinHash": "$2a$10$fF0NTo6Gvmf1Pfv035rcse/3lxLNQkd1ZHo3AUBlDPAbTQitzkLNy",
+    "creadoEn": "2026-09-12T00:40:18.254Z",
+    "ubicacion": {
+      "lat": 18.43109425,
+      "lng": -68.96726824999999,
+      "direccion": "C2JM+C24, Calle Dr. Teofilo Ferry, La Romana 22000, República Dominicana",
+      "referencia": "Alfrente del antiguo pelicano",
+      "etiqueta": "Casa",
+      "actualizadaEn": "2026-09-12T00:40:27.903Z"
+    }
   }
 ]

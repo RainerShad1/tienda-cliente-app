@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 
 const authRoutes = require("./src/routes/auth");
+const clientesRoutes = require("./src/routes/clientes");
 const errorHandler = require("./src/middleware/errorHandler");
 
 const app = express();
@@ -16,6 +17,7 @@ app.get("/api/salud", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/clientes", clientesRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ error: "Ruta no encontrada." });

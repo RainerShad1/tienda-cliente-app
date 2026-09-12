@@ -25,3 +25,15 @@ export async function iniciarSesion({ cedula, pin }) {
   });
   return manejarRespuesta(res);
 }
+
+export async function guardarUbicacion(token, { lat, lng, direccion, referencia, etiqueta }) {
+  const res = await fetch(`${API_URL}/clientes/ubicacion`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ lat, lng, direccion, referencia, etiqueta }),
+  });
+  return manejarRespuesta(res);
+}

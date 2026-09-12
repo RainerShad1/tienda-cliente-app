@@ -12,10 +12,36 @@ dígitos**.
 - Una vez que alguien se registra en ese dispositivo, las próximas veces se
   muestra la pantalla de **login** (cédula + PIN). Desde ahí hay un enlace
   "Cliente nuevo" para registrar otra cuenta en el mismo dispositivo.
+- Después de registrarse (o de iniciar sesión, si esa cuenta todavía no
+  tiene ubicación guardada), se muestra un mapa interactivo de Google Maps
+  para confirmar la dirección exacta de entrega con un pin arrastrable.
+- Con la ubicación guardada, se pasa a la pantalla de bienvenida, que
+  muestra los datos del cliente y su dirección de entrega.
 - Esto se controla con una bandera en `localStorage` del navegador, así que
   es por dispositivo, no por usuario. Si prefieres otro comportamiento (por
   ejemplo, que el registro solo dependa de si existen clientes en la base de
   datos, sin importar el dispositivo), lo puedo ajustar.
+
+## Ubicación del cliente (Google Maps)
+
+- El frontend necesita una clave de API de Google Maps en la variable de
+  entorno `VITE_GOOGLE_MAPS_API_KEY` (ver `frontend/.env.example`).
+- En Google Cloud Console, esa clave debe tener habilitadas: **Maps
+  JavaScript API** y **Geocoding API**, y debe estar restringida por
+  dominio (tu dominio de producción + `localhost` para pruebas) para que
+  nadie más pueda usarla.
+- **Nunca subas la clave real a GitHub ni la pegues en un chat.** Va solo en
+  tu archivo `.env` local (ya está en `.gitignore`) y en las variables de
+  entorno del proyecto en Vercel.
+- El backend guarda `lat`, `lng`, la dirección, una referencia opcional y
+  una etiqueta (Casa/Trabajo/Otro) en el registro del cliente, en la ruta
+  protegida `PUT /api/clientes/ubicacion` (requiere el token que se recibe
+  al registrarse o iniciar sesión).
+- Por seguridad, el backend rechaza coordenadas fuera de una caja
+  aproximada de República Dominicana (ver `LIMITES_RD` en
+  `backend/src/routes/clientes.js`) — ajústalo si en algún momento entregas
+  fuera del país.
+
 
 ## Estructura
 

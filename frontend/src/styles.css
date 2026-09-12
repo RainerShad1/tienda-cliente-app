@@ -52,6 +52,65 @@ body {
   border: 1px solid var(--linea);
 }
 
+.tarjeta-ancha {
+  max-width: 480px;
+}
+
+.contenedor-mapa {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1.5px solid var(--linea);
+  background: var(--piedra);
+}
+
+.mapa {
+  width: 100%;
+  height: 100%;
+}
+
+.mapa-cargando {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5b6154;
+  font-size: 0.9rem;
+  background: var(--piedra);
+}
+
+.chips-etiqueta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--linea);
+  background: #fff;
+  color: var(--tinta);
+  font-family: var(--fuente-texto);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.chip:hover {
+  border-color: var(--marca);
+}
+
+.chip--activo {
+  background: var(--marca);
+  border-color: var(--marca);
+  color: var(--piedra);
+}
+
 .franja-marca {
   background: var(--marca);
   background-image: linear-gradient(135deg, var(--marca) 0%, var(--marca-oscuro) 100%);
