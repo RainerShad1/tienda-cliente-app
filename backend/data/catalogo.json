@@ -1,0 +1,92 @@
+{
+  "categorias": [
+    { "id": "empanadas", "nombre": "Empanadas", "icono": "🥟" },
+    { "id": "bebidas", "nombre": "Bebidas", "icono": "🥤" },
+    { "id": "combos", "nombre": "Combos", "icono": "🍽️" }
+  ],
+  "productos": [
+    {
+      "id": "res-queso",
+      "categoriaId": "empanadas",
+      "nombre": "Res con queso",
+      "descripcion": "Carne de res guisada con queso derretido.",
+      "precio": 75,
+      "icono": "🥟",
+      "destacado": true
+    },
+    {
+      "id": "pollo",
+      "categoriaId": "empanadas",
+      "nombre": "Pollo",
+      "descripcion": "Pollo guisado, bien sazonado.",
+      "precio": 65,
+      "icono": "🥟",
+      "destacado": true
+    },
+    {
+      "id": "jamon-queso",
+      "categoriaId": "empanadas",
+      "nombre": "Jamón y queso",
+      "descripcion": "Jamón y queso derretido.",
+      "precio": 65,
+      "icono": "🥟",
+      "destacado": false
+    },
+    {
+      "id": "vegetariana",
+      "categoriaId": "empanadas",
+      "nombre": "Vegetariana",
+      "descripcion": "Vegetales salteados con queso.",
+      "precio": 60,
+      "icono": "🥟",
+      "destacado": false
+    },
+    {
+      "id": "coca-cola",
+      "categoriaId": "bebidas",
+      "nombre": "Coca-Cola",
+      "descripcion": "Lata fría de 12oz.",
+      "precio": 50,
+      "icono": "🥤",
+      "destacado": false
+    },
+    {
+      "id": "jugo-natural",
+      "categoriaId": "bebidas",
+      "nombre": "Jugo natural",
+      "descripcion": "Jugo del día, pregunta el sabor disponible.",
+      "precio": 70,
+      "icono": "🧃",
+      "destacado": false
+    },
+    {
+      "id": "agua",
+      "categoriaId": "bebidas",
+      "nombre": "Agua",
+      "descripcion": "Botella de agua fría.",
+      "precio": 35,
+      "icono": "💧",
+      "destacado": false
+    },
+    {
+      "id": "combo-3",
+      "categoriaId": "combos",
+      "nombre": "Combo 3 empanadas",
+      "descripcion": "3 empanadas a elegir + refresco.",
+      "precio": 199,
+      "precioAntes": 250,
+      "icono": "🍽️",
+      "destacado": false
+    },
+    {
+      "id": "combo-familiar",
+      "categoriaId": "combos",
+      "nombre": "Combo familiar",
+      "descripcion": "6 empanadas a elegir + 2 refrescos.",
+      "precio": 399,
+      "precioAntes": 500,
+      "icono": "🍽️",
+      "destacado": false
+    }
+  ]
+}

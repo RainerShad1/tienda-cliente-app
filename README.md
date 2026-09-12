@@ -92,6 +92,20 @@ cada uno de los primeros 10 dígitos se multiplica por la secuencia de pesos
 suman los 10 resultados y el dígito verificador esperado es
 `(10 - suma % 10) % 10`, que debe coincidir con el dígito 11 de la cédula.
 
+## Catálogo (empanadas, bebidas, combos)
+
+- Los datos viven en `backend/data/catalogo.json` (categorías y productos).
+  Es el mismo enfoque de archivo simple que usamos para los clientes: fácil
+  de editar a mano por ahora, y fácil de migrar a una base de datos real más
+  adelante sin tocar el resto del código.
+- Para agregar, quitar o cambiar precios de productos, edita ese archivo
+  directamente — no hace falta tocar código.
+- El frontend consume `GET /api/catalogo` (pública, sin necesidad de token)
+  y arma las categorías, las tarjetas de producto y el carrito en memoria
+  (`frontend/src/components/Menu.jsx`).
+- El carrito por ahora es solo para armar el pedido y ver el total; el pago
+  y la confirmación del pedido son la siguiente fase.
+
 ## Próximos pasos sugeridos
 
 - Conectar el token JWT a rutas protegidas (perfil, historial de compras).

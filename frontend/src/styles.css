@@ -390,3 +390,321 @@ body {
     height: 48px;
   }
 }
+
+/* ---------- Catálogo (tema oscuro, acorde a la referencia visual) ---------- */
+
+.pantalla-menu {
+  width: 100%;
+  max-width: 480px;
+  min-height: 640px;
+  max-height: 90vh;
+  background: var(--menu-fondo);
+  color: var(--menu-texto);
+  border-radius: 22px;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  padding-bottom: 24px;
+}
+
+:root {
+  --menu-fondo: #1b1815;
+  --menu-tarjeta: #262220;
+  --menu-linea: #37322d;
+  --menu-texto: #f5f1e8;
+  --menu-texto-tenue: #a89e8e;
+}
+
+.menu-cabecera {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 22px 20px 16px;
+}
+
+.menu-cabecera__tienda {
+  display: block;
+  font-family: var(--fuente-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.menu-cabecera__estado {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--menu-texto-tenue);
+  margin-top: 4px;
+}
+
+.menu-boton-volver {
+  background: var(--menu-tarjeta);
+  color: var(--menu-texto);
+  border: 1px solid var(--menu-linea);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  font-family: var(--fuente-texto);
+  cursor: pointer;
+}
+
+.menu-mensaje {
+  padding: 0 20px;
+  color: var(--menu-texto-tenue);
+  font-size: 0.9rem;
+}
+
+.menu-mensaje--error {
+  color: #e08a72;
+}
+
+.menu-categorias {
+  display: flex;
+  gap: 10px;
+  padding: 4px 20px 18px;
+  overflow-x: auto;
+}
+
+.menu-chip-categoria {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--menu-linea);
+  background: var(--menu-tarjeta);
+  color: var(--menu-texto-tenue);
+  font-family: var(--fuente-texto);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.menu-chip-categoria--activa {
+  background: var(--dorado);
+  border-color: var(--dorado);
+  color: #1b1815;
+  font-weight: 700;
+}
+
+.menu-lista-productos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 20px;
+}
+
+.menu-tarjeta-producto {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--menu-tarjeta);
+  border: 1px solid var(--menu-linea);
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.menu-tarjeta-producto__icono {
+  font-size: 2rem;
+  width: 56px;
+  height: 56px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(201, 154, 59, 0.12);
+  border-radius: 14px;
+}
+
+.menu-tarjeta-producto__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.menu-tarjeta-producto__info h3 {
+  margin: 0 0 4px;
+  font-family: var(--fuente-display);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.menu-tarjeta-producto__info p {
+  margin: 0 0 8px;
+  font-size: 0.82rem;
+  color: var(--menu-texto-tenue);
+  line-height: 1.4;
+}
+
+.menu-tarjeta-producto__precios {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.menu-precio {
+  font-family: var(--fuente-display);
+  font-weight: 700;
+  color: var(--dorado);
+}
+
+.menu-precio-antes {
+  font-size: 0.78rem;
+  color: var(--menu-texto-tenue);
+  text-decoration: line-through;
+}
+
+.menu-tarjeta-producto__control {
+  flex: none;
+}
+
+.menu-boton-agregar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: var(--dorado);
+  color: #1b1815;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.menu-contador {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--menu-fondo);
+  border: 1px solid var(--menu-linea);
+  border-radius: 999px;
+  padding: 4px 6px;
+}
+
+.menu-contador button {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: var(--dorado);
+  color: #1b1815;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.menu-contador span {
+  min-width: 16px;
+  text-align: center;
+  font-family: var(--fuente-display);
+  font-weight: 600;
+}
+
+.menu-barra-carrito {
+  position: sticky;
+  bottom: 16px;
+  left: 20px;
+  right: 20px;
+  width: calc(100% - 40px);
+  margin: 20px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--dorado);
+  color: #1b1815;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 20px;
+  font-family: var(--fuente-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(201, 154, 59, 0.4);
+}
+
+.menu-superposicion {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 20;
+}
+
+.menu-hoja-carrito {
+  width: 100%;
+  max-width: 480px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: var(--menu-fondo);
+  color: var(--menu-texto);
+  border-radius: 22px 22px 0 0;
+  padding: 24px 20px 28px;
+}
+
+.menu-hoja-carrito h2 {
+  margin: 0 0 16px;
+  font-family: var(--fuente-display);
+}
+
+.menu-hoja-carrito__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.menu-hoja-carrito__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-hoja-carrito__icono {
+  font-size: 1.5rem;
+}
+
+.menu-hoja-carrito__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.85rem;
+}
+
+.menu-hoja-carrito__info span {
+  color: var(--menu-texto-tenue);
+  font-size: 0.78rem;
+}
+
+.menu-hoja-carrito__total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 14px;
+  border-top: 1px solid var(--menu-linea);
+  font-family: var(--fuente-display);
+  font-size: 1.05rem;
+}
+
+.menu-hoja-carrito__nota {
+  margin: 14px 0 0;
+  font-size: 0.78rem;
+  color: var(--menu-texto-tenue);
+  line-height: 1.5;
+}
+
+.menu-boton-cerrar-hoja {
+  margin-top: 16px;
+  width: 100%;
+  padding: 13px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--menu-linea);
+  background: transparent;
+  color: var(--menu-texto);
+  font-family: var(--fuente-texto);
+  font-size: 0.95rem;
+  cursor: pointer;
+}

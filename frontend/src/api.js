@@ -37,3 +37,8 @@ export async function guardarUbicacion(token, { lat, lng, direccion, referencia,
   });
   return manejarRespuesta(res);
 }
+
+export async function obtenerCatalogo() {
+  const res = await fetch(`${API_URL}/catalogo`);
+  return manejarRespuesta(res);
+}
