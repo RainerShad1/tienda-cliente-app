@@ -3,12 +3,13 @@ import RegisterForm from "./components/RegisterForm";
 import LoginForm from "./components/LoginForm";
 import LocationForm from "./components/LocationForm";
 import Bienvenida from "./components/Bienvenida";
+import Menu from "./components/Menu";
 
 const CLAVE_DISPOSITIVO_REGISTRADO = "tienda_dispositivo_ya_registro_cliente";
 const CLAVE_SESION = "tienda_sesion_cliente";
 
 export default function App() {
-  // vista: "registro" | "login" | "ubicacion" | "bienvenida"
+  // vista: "registro" | "login" | "ubicacion" | "bienvenida" | "menu"
   const [vista, setVista] = useState(null);
   const [sesion, setSesion] = useState(null); // { token, cliente }
 
@@ -86,8 +87,11 @@ export default function App() {
           cliente={sesion.cliente}
           onCerrarSesion={cerrarSesion}
           onEditarUbicacion={() => setVista("ubicacion")}
+          onVerMenu={() => setVista("menu")}
         />
       )}
+
+      {vista === "menu" && sesion && <Menu onVolver={() => setVista("bienvenida")} />}
     </main>
   );
 }

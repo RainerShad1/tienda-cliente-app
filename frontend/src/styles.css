@@ -270,6 +270,29 @@ body {
   cursor: default;
 }
 
+.boton-destacado {
+  margin-top: 4px;
+  padding: 15px 18px;
+  border-radius: 10px;
+  border: none;
+  background: var(--dorado);
+  color: var(--tinta);
+  font-family: var(--fuente-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(201, 154, 59, 0.35);
+  transition: transform 0.05s ease, box-shadow 0.15s ease;
+}
+
+.boton-destacado:hover {
+  box-shadow: 0 6px 18px rgba(201, 154, 59, 0.45);
+}
+
+.boton-destacado:active {
+  transform: translateY(1px);
+}
+
 .boton-secundario {
   margin-top: 4px;
   padding: 12px 18px;
