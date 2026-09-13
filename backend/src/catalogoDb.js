@@ -32,4 +32,10 @@ async function obtenerCatalogo() {
   };
 }
 
-module.exports = { obtenerCatalogo };
+async function obtenerProductosPorIds(ids) {
+  if (!ids || ids.length === 0) return [];
+  const { rows } = await pool.query("select * from productos where id = any($1::text[])", [ids]);
+  return rows.map(mapearProducto);
+}
+
+module.exports = { obtenerCatalogo, obtenerProductosPorIds };

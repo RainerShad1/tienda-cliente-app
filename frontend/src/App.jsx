@@ -4,12 +4,13 @@ import LoginForm from "./components/LoginForm";
 import LocationForm from "./components/LocationForm";
 import Bienvenida from "./components/Bienvenida";
 import Menu from "./components/Menu";
+import MisPedidos from "./components/MisPedidos";
 
 const CLAVE_DISPOSITIVO_REGISTRADO = "tienda_dispositivo_ya_registro_cliente";
 const CLAVE_SESION = "tienda_sesion_cliente";
 
 export default function App() {
-  // vista: "registro" | "login" | "ubicacion" | "bienvenida" | "menu"
+  // vista: "registro" | "login" | "ubicacion" | "bienvenida" | "menu" | "pedidos"
   const [vista, setVista] = useState(null);
   const [sesion, setSesion] = useState(null); // { token, cliente }
 
@@ -91,7 +92,19 @@ export default function App() {
         />
       )}
 
-      {vista === "menu" && sesion && <Menu onVolver={() => setVista("bienvenida")} />}
+      {vista === "menu" && sesion && (
+        <Menu
+          token={sesion.token}
+          tieneUbicacion={Boolean(sesion.cliente.ubicacion)}
+          onVolver={() => setVista("bienvenida")}
+          onIrAUbicacion={() => setVista("ubicacion")}
+          onVerPedidos={() => setVista("pedidos")}
+        />
+      )}
+
+      {vista === "pedidos" && sesion && (
+        <MisPedidos token={sesion.token} onVolver={() => setVista("menu")} />
+      )}
     </main>
   );
 }

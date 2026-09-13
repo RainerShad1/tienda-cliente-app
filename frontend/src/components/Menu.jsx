@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { obtenerCatalogo } from "../api";
+import { obtenerCatalogo, crearPedido } from "../api";
 import { formatearPrecio } from "../utils/moneda";
 
 const NOMBRE_TIENDA = import.meta.env.VITE_NOMBRE_TIENDA || "Mi Tienda";
 
-export default function Menu({ onVolver }) {
+export default function Menu({ token, tieneUbicacion, onVolver, onIrAUbicacion, onVerPedidos }) {
   const [categorias, setCategorias] = useState([]);
   const [productos, setProductos] = useState([]);
   const [categoriaActiva, setCategoriaActiva] = useState(null);
@@ -12,6 +12,10 @@ export default function Menu({ onVolver }) {
   const [error, setError] = useState("");
   const [carrito, setCarrito] = useState({}); // { [productoId]: cantidad }
   const [mostrarCarrito, setMostrarCarrito] = useState(false);
+  const [notas, setNotas] = useState("");
+  const [enviandoPedido, setEnviandoPedido] = useState(false);
+  const [errorPedido, setErrorPedido] = useState("");
+  const [pedidoConfirmado, setPedidoConfirmado] = useState(null);
 
   useEffect(() => {
     obtenerCatalogo()
@@ -55,6 +59,35 @@ export default function Menu({ onVolver }) {
     });
   }
 
+  function abrirCarrito() {
+    setErrorPedido("");
+    setPedidoConfirmado(null);
+    setMostrarCarrito(true);
+  }
+
+  async function confirmarPedido() {
+    setErrorPedido("");
+
+    if (!tieneUbicacion) {
+      setErrorPedido("Agrega tu ubicación de entrega antes de confirmar el pedido.");
+      return;
+    }
+
+    const items = Object.entries(carrito).map(([productoId, cantidad]) => ({ productoId, cantidad }));
+
+    setEnviandoPedido(true);
+    try {
+      const { pedido } = await crearPedido(token, { items, metodoPago: "efectivo", notas });
+      setPedidoConfirmado(pedido);
+      setCarrito({});
+      setNotas("");
+    } catch (err) {
+      setErrorPedido(err.message);
+    } finally {
+      setEnviandoPedido(false);
+    }
+  }
+
   return (
     <div className="pantalla-menu">
       <div className="menu-cabecera">
@@ -62,9 +95,16 @@ export default function Menu({ onVolver }) {
           <span className="menu-cabecera__tienda">{NOMBRE_TIENDA}</span>
           <span className="menu-cabecera__estado">🟢 Abierto ahora</span>
         </div>
-        <button type="button" className="menu-boton-volver" onClick={onVolver}>
-          Mi cuenta
-        </button>
+        <div className="menu-cabecera__acciones">
+          {onVerPedidos && (
+            <button type="button" className="menu-boton-volver" onClick={onVerPedidos}>
+              Mis pedidos
+            </button>
+          )}
+          <button type="button" className="menu-boton-volver" onClick={onVolver}>
+            Mi cuenta
+          </button>
+        </div>
       </div>
 
       {cargando && <p className="menu-mensaje">Cargando el menú…</p>}
@@ -131,7 +171,7 @@ export default function Menu({ onVolver }) {
       )}
 
       {totalItems > 0 && (
-        <button type="button" className="menu-barra-carrito" onClick={() => setMostrarCarrito(true)}>
+        <button type="button" className="menu-barra-carrito" onClick={abrirCarrito}>
           <span className="menu-barra-carrito__cantidad">
             🛒 {totalItems} {totalItems === 1 ? "producto" : "productos"}
           </span>
@@ -142,46 +182,102 @@ export default function Menu({ onVolver }) {
       {mostrarCarrito && (
         <div className="menu-superposicion" onClick={() => setMostrarCarrito(false)}>
           <div className="menu-hoja-carrito" onClick={(e) => e.stopPropagation()}>
-            <h2>Tu pedido</h2>
+            {pedidoConfirmado ? (
+              <>
+                <h2>¡Pedido confirmado! 🎉</h2>
+                <p className="menu-hoja-carrito__nota">
+                  Tu pedido por {formatearPrecio(pedidoConfirmado.total)} quedó registrado, a pagar en efectivo
+                  contra entrega. Te avisaremos según vaya avanzando.
+                </p>
+                <button type="button" className="menu-boton-cerrar-hoja" onClick={() => setMostrarCarrito(false)}>
+                  Seguir viendo el menú
+                </button>
+              </>
+            ) : (
+              <>
+                <h2>Tu pedido</h2>
 
-            <div className="menu-hoja-carrito__lista">
-              {Object.entries(carrito).map(([id, cantidad]) => {
-                const producto = productosPorId[id];
-                if (!producto) return null;
-                return (
-                  <div className="menu-hoja-carrito__item" key={id}>
-                    <span className="menu-hoja-carrito__icono">{producto.icono}</span>
-                    <div className="menu-hoja-carrito__info">
-                      <strong>{producto.nombre}</strong>
-                      <span>{formatearPrecio(producto.precio)} c/u</span>
-                    </div>
-                    <div className="menu-contador">
-                      <button type="button" onClick={() => cambiarCantidad(id, -1)} aria-label="Quitar uno">
-                        −
-                      </button>
-                      <span>{cantidad}</span>
-                      <button type="button" onClick={() => cambiarCantidad(id, 1)} aria-label="Agregar uno">
-                        +
-                      </button>
-                    </div>
+                <div className="menu-hoja-carrito__lista">
+                  {Object.entries(carrito).map(([id, cantidad]) => {
+                    const producto = productosPorId[id];
+                    if (!producto) return null;
+                    return (
+                      <div className="menu-hoja-carrito__item" key={id}>
+                        <span className="menu-hoja-carrito__icono">{producto.icono}</span>
+                        <div className="menu-hoja-carrito__info">
+                          <strong>{producto.nombre}</strong>
+                          <span>{formatearPrecio(producto.precio)} c/u</span>
+                        </div>
+                        <div className="menu-contador">
+                          <button type="button" onClick={() => cambiarCantidad(id, -1)} aria-label="Quitar uno">
+                            −
+                          </button>
+                          <span>{cantidad}</span>
+                          <button type="button" onClick={() => cambiarCantidad(id, 1)} aria-label="Agregar uno">
+                            +
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="menu-campo-notas">
+                  <label htmlFor="notas-pedido">Notas para tu pedido (opcional)</label>
+                  <textarea
+                    id="notas-pedido"
+                    placeholder='Ej: "sin cebolla", "tocar el timbre"'
+                    value={notas}
+                    onChange={(e) => setNotas(e.target.value)}
+                    maxLength={300}
+                    rows={2}
+                  />
+                </div>
+
+                <div className="menu-metodo-pago">
+                  <span className="menu-metodo-pago__titulo">Método de pago</span>
+                  <div className="menu-metodo-pago__opciones">
+                    <button type="button" className="menu-chip-pago menu-chip-pago--activo">
+                      💵 Efectivo contra entrega
+                    </button>
+                    <button type="button" className="menu-chip-pago menu-chip-pago--deshabilitado" disabled>
+                      💳 Tarjeta (próximamente)
+                    </button>
                   </div>
-                );
-              })}
-            </div>
+                </div>
 
-            <div className="menu-hoja-carrito__total">
-              <span>Total</span>
-              <strong>{formatearPrecio(totalPrecio)}</strong>
-            </div>
+                {!tieneUbicacion && (
+                  <div className="menu-aviso-ubicacion">
+                    Necesitas una ubicación de entrega guardada para poder pedir.{" "}
+                    {onIrAUbicacion && (
+                      <button type="button" className="enlace-oscuro" onClick={onIrAUbicacion}>
+                        Agrégala aquí
+                      </button>
+                    )}
+                  </div>
+                )}
 
-            <p className="menu-hoja-carrito__nota">
-              El pago y la confirmación del pedido los agregamos en la próxima fase. Por ahora puedes armar tu
-              pedido para probar el catálogo.
-            </p>
+                <div className="menu-hoja-carrito__total">
+                  <span>Total</span>
+                  <strong>{formatearPrecio(totalPrecio)}</strong>
+                </div>
 
-            <button type="button" className="menu-boton-cerrar-hoja" onClick={() => setMostrarCarrito(false)}>
-              Seguir viendo el menú
-            </button>
+                {errorPedido && <div className="menu-alerta-error">{errorPedido}</div>}
+
+                <button
+                  type="button"
+                  className="menu-boton-confirmar"
+                  onClick={confirmarPedido}
+                  disabled={enviandoPedido || !tieneUbicacion}
+                >
+                  {enviandoPedido ? "Enviando pedido…" : "Confirmar pedido"}
+                </button>
+
+                <button type="button" className="menu-boton-cerrar-hoja" onClick={() => setMostrarCarrito(false)}>
+                  Seguir viendo el menú
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}

@@ -137,6 +137,29 @@ servicio backend (Settings → Environment) y vuelve a desplegar.
   y la confirmación del pedido son la siguiente fase.
 
 
+## Pedidos
+
+- Tabla `pedidos` en la base de datos (ver `backend/sql/pedidos.sql` — hay
+  que correr este SQL en Supabase igual que se hizo con `esquema.sql`, es
+  un archivo aparte porque se agregó después).
+- `POST /api/pedidos` (requiere token): recibe la lista de productos y
+  cantidades, **recalcula los precios en el servidor** contra la base de
+  datos (nunca confía en precios que mande el navegador — así nadie puede
+  manipular un pedido para pagar menos), y guarda una foto del pedido (con
+  los nombres/precios de ese momento, y la dirección de entrega de ese
+  momento) para que quede como historial fiel aunque el catálogo o la
+  dirección cambien después.
+- `GET /api/pedidos` (requiere token): el cliente ve su propio historial.
+- Por ahora solo se acepta pago en **efectivo contra entrega**. El backend
+  ya sabe rechazar "tarjeta" con un mensaje claro — cuando quieras activar
+  el cobro con tarjeta a través del Verifone del repartidor, solo hay que
+  quitar esa restricción y ajustar el frontend (el botón ya está ahí,
+  deshabilitado, listo para activarse).
+- Estados de un pedido: `pendiente`, `confirmado`, `en_camino`,
+  `entregado`, `cancelado`. Por ahora todo pedido nuevo nace en
+  `pendiente` — cambiar el estado (por ejemplo, cuando el negocio confirma
+  o el repartidor sale) es parte del futuro panel de administración.
+
 ## Próximos pasos sugeridos
 
 - Conectar el token JWT a rutas protegidas (perfil, historial de compras).

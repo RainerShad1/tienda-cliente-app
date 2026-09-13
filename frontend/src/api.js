@@ -42,3 +42,22 @@ export async function obtenerCatalogo() {
   const res = await fetch(`${API_URL}/catalogo`);
   return manejarRespuesta(res);
 }
+
+export async function crearPedido(token, { items, metodoPago, notas }) {
+  const res = await fetch(`${API_URL}/pedidos`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ items, metodoPago, notas }),
+  });
+  return manejarRespuesta(res);
+}
+
+export async function obtenerMisPedidos(token) {
+  const res = await fetch(`${API_URL}/pedidos`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return manejarRespuesta(res);
+}
