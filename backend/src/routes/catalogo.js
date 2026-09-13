@@ -1,15 +1,13 @@
 const express = require("express");
-const fs = require("fs");
-const path = require("path");
+
+const { obtenerCatalogo } = require("../catalogoDb");
 
 const router = express.Router();
 
-const RUTA_CATALOGO = path.join(__dirname, "..", "..", "data", "catalogo.json");
-
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const contenido = fs.readFileSync(RUTA_CATALOGO, "utf-8");
-    res.json(JSON.parse(contenido));
+    const catalogo = await obtenerCatalogo();
+    res.json(catalogo);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "No se pudo cargar el catálogo." });

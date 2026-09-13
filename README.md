@@ -54,16 +54,14 @@ frontend/    App en React + Vite (formularios, validación en vivo)
 
 ```bash
 cd backend
-cp .env.example .env      # y cambia JWT_SECRET por un valor propio
+cp .env.example .env      # cambia JWT_SECRET y agrega tu DATABASE_URL
 npm install
 npm start                  # http://localhost:4000
 ```
 
-Los clientes se guardan en `backend/data/clients.json` (un archivo, no una
-base de datos real). Es suficiente para probar y para un volumen pequeño.
-Cuando quieras pasar a producción con muchos clientes concurrentes, cambia
-`backend/src/db.js` por Postgres, MySQL o SQLite — el resto del código no
-tiene que cambiar porque solo usa las funciones de ese archivo.
+Los clientes, categorías y productos se guardan en Postgres (recomendamos
+Supabase — ver la sección "Base de datos" más abajo para configurarla antes
+de correr el backend por primera vez).
 
 ## Poner a correr el frontend
 
@@ -92,19 +90,52 @@ cada uno de los primeros 10 dígitos se multiplica por la secuencia de pesos
 suman los 10 resultados y el dígito verificador esperado es
 `(10 - suma % 10) % 10`, que debe coincidir con el dígito 11 de la cédula.
 
+## Base de datos (Postgres / Supabase)
+
+Los clientes, categorías y productos ahora viven en una base de datos
+Postgres real, no en archivos JSON. Usa **Supabase** para esto (ver por qué
+más abajo).
+
+**Configurarla la primera vez:**
+
+1. Crea una cuenta gratis en [supabase.com](https://supabase.com) y un
+   proyecto nuevo.
+2. En tu proyecto → Settings → Database, copia la "Connection string" (modo
+   "Transaction" o "Session", cualquiera sirve para este proyecto).
+3. Pégala como `DATABASE_URL` en tu `.env` del backend (nunca la pegues en
+   un chat — trátala con el mismo cuidado que la clave de Google Maps).
+4. En Supabase → SQL Editor → New query, pega el contenido de
+   `backend/sql/esquema.sql` y dale Run. Esto crea las tablas.
+5. Corre `cd backend && npm run seed` una vez, para cargar las categorías y
+   productos iniciales (empanadas, bebidas, combos).
+6. Listo — `npm start` ya debería conectar a Supabase en vez de a un
+   archivo local.
+
+**Por qué Supabase y no la base de datos gratis de Render:** la base de
+datos Postgres gratuita de Render se borra automáticamente a los 30 días
+(con 14 días de gracia para pasarla a un plan pago antes de perder los
+datos). Supabase, en cambio, solo "pausa" el proyecto tras 7 días sin
+actividad — tus datos nunca se pierden, y se reactiva con un clic o
+automáticamente en la primera consulta. Supabase también incluye un panel
+visual (como una hoja de cálculo) para ver y editar tus clientes y
+productos sin escribir SQL.
+
+**En Render**, agrega la misma `DATABASE_URL` como variable de entorno del
+servicio backend (Settings → Environment) y vuelve a desplegar.
+
 ## Catálogo (empanadas, bebidas, combos)
 
-- Los datos viven en `backend/data/catalogo.json` (categorías y productos).
-  Es el mismo enfoque de archivo simple que usamos para los clientes: fácil
-  de editar a mano por ahora, y fácil de migrar a una base de datos real más
-  adelante sin tocar el resto del código.
-- Para agregar, quitar o cambiar precios de productos, edita ese archivo
-  directamente — no hace falta tocar código.
+- Categorías y productos viven en las tablas `categorias` y `productos` de
+  la base de datos (ver sección de arriba). Para agregar, quitar o cambiar
+  precios, puedes editarlos directamente desde el panel de Supabase (Table
+  Editor) sin tocar código, o volver a correr `npm run seed` con los datos
+  que quieras después de editar `backend/scripts/seed.js`.
 - El frontend consume `GET /api/catalogo` (pública, sin necesidad de token)
   y arma las categorías, las tarjetas de producto y el carrito en memoria
   (`frontend/src/components/Menu.jsx`).
 - El carrito por ahora es solo para armar el pedido y ver el total; el pago
   y la confirmación del pedido son la siguiente fase.
+
 
 ## Próximos pasos sugeridos
 

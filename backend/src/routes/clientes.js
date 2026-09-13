@@ -16,7 +16,7 @@ function clientePublico(cliente) {
   return resto;
 }
 
-router.put("/ubicacion", requerirToken, (req, res) => {
+router.put("/ubicacion", requerirToken, async (req, res) => {
   const { lat, lng, direccion, referencia, etiqueta } = req.body || {};
 
   if (typeof lat !== "number" || typeof lng !== "number" || Number.isNaN(lat) || Number.isNaN(lng)) {
@@ -34,12 +34,12 @@ router.put("/ubicacion", requerirToken, (req, res) => {
     return res.status(400).json({ error: "Escribe o confirma una dirección válida." });
   }
 
-  const cliente = buscarPorCedula(req.cliente.cedula);
+  const cliente = await buscarPorCedula(req.cliente.cedula);
   if (!cliente) {
     return res.status(404).json({ error: "Cliente no encontrado." });
   }
 
-  const clienteActualizado = actualizarCliente(cliente.cedula, {
+  const clienteActualizado = await actualizarCliente(cliente.cedula, {
     ubicacion: {
       lat,
       lng,

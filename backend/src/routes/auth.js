@@ -50,7 +50,7 @@ router.post("/registro", async (req, res) => {
 
   const cedulaLimpia = limpiarCedula(cedula);
 
-  if (buscarPorCedula(cedulaLimpia)) {
+  if (await buscarPorCedula(cedulaLimpia)) {
     return res.status(409).json({ error: "Ya existe una cuenta registrada con esta cedula." });
   }
 
@@ -65,7 +65,7 @@ router.post("/registro", async (req, res) => {
     creadoEn: new Date().toISOString(),
   };
 
-  crearCliente(cliente);
+  await crearCliente(cliente);
 
   const token = generarToken(cliente);
   res.status(201).json({ token, cliente: clientePublico(cliente) });
@@ -87,7 +87,7 @@ router.post("/login", async (req, res) => {
     return res.status(400).json({ error: "Cedula o PIN invalido." });
   }
 
-  const cliente = buscarPorCedula(cedulaLimpia);
+  const cliente = await buscarPorCedula(cedulaLimpia);
   if (!cliente) {
     return res.status(401).json({ error: "No encontramos una cuenta con esa cedula." });
   }
