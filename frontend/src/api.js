@@ -1,8 +1,12 @@
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
 
-async function manejarRespuesta(res) {
+async function manejarRespuesta(res, { esRutaProtegida = false } = {}) {
   const datos = await res.json().catch(() => ({}));
+
   if (!res.ok) {
+    if (esRutaProtegida && res.status === 401) {
+      window.dispatchEvent(new CustomEvent("sesion-expirada"));
+    }
     throw new Error(datos.error || "Algo salio mal. Intenta de nuevo.");
   }
   return datos;
@@ -35,7 +39,7 @@ export async function guardarUbicacion(token, { lat, lng, direccion, referencia,
     },
     body: JSON.stringify({ lat, lng, direccion, referencia, etiqueta }),
   });
-  return manejarRespuesta(res);
+  return manejarRespuesta(res, { esRutaProtegida: true });
 }
 
 export async function obtenerCatalogo() {
@@ -52,12 +56,12 @@ export async function crearPedido(token, { items, metodoPago, notas }) {
     },
     body: JSON.stringify({ items, metodoPago, notas }),
   });
-  return manejarRespuesta(res);
+  return manejarRespuesta(res, { esRutaProtegida: true });
 }
 
 export async function obtenerMisPedidos(token) {
   const res = await fetch(`${API_URL}/pedidos`, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  return manejarRespuesta(res);
+  return manejarRespuesta(res, { esRutaProtegida: true });
 }

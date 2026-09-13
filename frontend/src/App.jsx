@@ -13,6 +13,7 @@ export default function App() {
   // vista: "registro" | "login" | "ubicacion" | "bienvenida" | "menu" | "pedidos"
   const [vista, setVista] = useState(null);
   const [sesion, setSesion] = useState(null); // { token, cliente }
+  const [mensajeLogin, setMensajeLogin] = useState("");
 
   useEffect(() => {
     const sesionGuardada = localStorage.getItem(CLAVE_SESION);
@@ -31,6 +32,22 @@ export default function App() {
     setVista(yaHuboRegistro ? "login" : "registro");
   }, []);
 
+  // Cualquier llamada a una ruta protegida que reciba un 401 dispara este
+  // aviso (ver api.js). Desde cualquier pantalla, esto cierra la sesion y
+  // manda de vuelta al login con un mensaje claro, en vez de dejar un error
+  // crudo del servidor sobre la pantalla en la que estaba el cliente.
+  useEffect(() => {
+    function manejarSesionExpirada() {
+      localStorage.removeItem(CLAVE_SESION);
+      setSesion(null);
+      setMensajeLogin("Tu sesión expiró por inactividad. Entra de nuevo con tu PIN.");
+      setVista("login");
+    }
+
+    window.addEventListener("sesion-expirada", manejarSesionExpirada);
+    return () => window.removeEventListener("sesion-expirada", manejarSesionExpirada);
+  }, []);
+
   function guardarSesion(datos) {
     localStorage.setItem(CLAVE_DISPOSITIVO_REGISTRADO, "true");
     localStorage.setItem(CLAVE_SESION, JSON.stringify(datos));
@@ -43,6 +60,7 @@ export default function App() {
   }
 
   function manejarExitoLogin(datos) {
+    setMensajeLogin("");
     guardarSesion(datos);
     setVista(datos.cliente.ubicacion ? "bienvenida" : "ubicacion");
   }
@@ -56,6 +74,7 @@ export default function App() {
   function cerrarSesion() {
     localStorage.removeItem(CLAVE_SESION);
     setSesion(null);
+    setMensajeLogin("");
     setVista("login");
   }
 
@@ -72,7 +91,7 @@ export default function App() {
       )}
 
       {vista === "login" && (
-        <LoginForm onExito={manejarExitoLogin} onIrARegistro={() => setVista("registro")} />
+        <LoginForm onExito={manejarExitoLogin} onIrARegistro={() => setVista("registro")} mensaje={mensajeLogin} />
       )}
 
       {vista === "ubicacion" && sesion && (

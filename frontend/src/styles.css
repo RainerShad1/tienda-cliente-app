@@ -200,6 +200,15 @@ body {
   line-height: 1.4;
 }
 
+.aviso-info {
+  background: rgba(47, 74, 60, 0.1);
+  color: var(--marca-oscuro);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
 .fila-pines {
   display: flex;
   flex-direction: column;

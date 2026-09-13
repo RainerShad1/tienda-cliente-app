@@ -5,7 +5,7 @@ import PinInput from "./PinInput";
 
 const NOMBRE_TIENDA = import.meta.env.VITE_NOMBRE_TIENDA || "Mi Tienda";
 
-export default function LoginForm({ onExito, onIrARegistro }) {
+export default function LoginForm({ onExito, onIrARegistro, mensaje }) {
   const [cedula, setCedula] = useState("");
   const [pin, setPin] = useState("");
   const [tocado, setTocado] = useState({});
@@ -44,6 +44,8 @@ export default function LoginForm({ onExito, onIrARegistro }) {
       <div className="cuerpo-formulario">
         <h1>Bienvenido de nuevo</h1>
         <p className="texto-ayuda">Ingresa tu cédula y tu PIN para entrar a tu cuenta.</p>
+
+        {mensaje && <div className="aviso-info">{mensaje}</div>}
 
         <div className="campo">
           <label htmlFor="login-cedula">Cédula</label>
